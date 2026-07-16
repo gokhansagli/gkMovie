@@ -1,0 +1,14 @@
+React kurulumu
+TMDB API bağlantısı
+Film listesini göster
+MovieCard component'i
+Search
+Movie Detail
+Router
+Wishlist
+Local Storage
+Filtreleme
+Pagination
+Responsive
+Dark Mode
+Performans geliştirmeleri
