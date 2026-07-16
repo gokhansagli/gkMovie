@@ -79,7 +79,17 @@ function App() {
             />
           }
         ></Route>
-        <Route path="/explore" element={<Explore />}></Route>
+        <Route
+          path="/explore"
+          element={
+            <Explore
+              popularMovies={popularMovies}
+              favoriMovies={favoriMovies}
+              addFav={addFav}
+              removeFav={removeFav}
+            />
+          }
+        ></Route>
         <Route path="/favorites" element={<Favorites />}></Route>
         <Route path="/watchlist" element={<WatchList />}></Route>
         <Route path="/movie/:id" element={<MovieDetail />}></Route>
