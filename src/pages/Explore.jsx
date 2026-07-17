@@ -6,25 +6,51 @@ import useDebounce from "../hooks/debounce";
 function Explore({ addFav, removeFav, favoriMovies }) {
   const [searchKey, setSearchKey] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [popularMovies, setPopularMovies] = useState([]);
+  const [moviesData, setMoviesData] = useState({});
 
   const debounce = useDebounce(searchKey, 300);
 
   useEffect(() => {
     if (debounce === "") {
-      getPopularMovies(currentPage).then((response) =>
-        setPopularMovies(response.results),
-      );
+      getPopularMovies(currentPage).then((response) => setMoviesData(response));
     } else {
       getFindMovie(debounce, currentPage).then((response) =>
-        setPopularMovies(response.results),
+        setMoviesData(response),
       );
     }
   }, [debounce, currentPage]);
 
-  console.log(currentPage);
-  console.log(popularMovies);
+  let startPage = 0;
+  let endPage = 0;
+  const visiblePages = 5;
+  const sideCount = Math.floor(visiblePages / 2);
+  const total_pages = moviesData?.total_pages || 0;
 
+  if (total_pages >= visiblePages) {
+    startPage = currentPage - sideCount;
+    endPage = currentPage + sideCount;
+
+    if (startPage < 1) {
+      startPage = 1;
+      endPage = visiblePages;
+    }
+
+    if (endPage > total_pages) {
+      endPage = total_pages;
+      startPage = total_pages - visiblePages + 1;
+    }
+  } else {
+    startPage = 1;
+    endPage = total_pages;
+  }
+
+  let pages = [];
+
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+
+  console.log(pages);
   return (
     <>
       <Navbar />
@@ -44,7 +70,7 @@ function Explore({ addFav, removeFav, favoriMovies }) {
           />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
-          {popularMovies.map((movie) => {
+          {moviesData?.results?.map((movie) => {
             return (
               <MovieCard
                 key={movie.id}
@@ -61,40 +87,37 @@ function Explore({ addFav, removeFav, favoriMovies }) {
             <ul className="flex gap-3 items-center justify-center text-center ">
               <li>
                 <button
-                  onClick={() => setCurrentPage(currentPage - 1)}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
                   className="w-20 h-10  rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white"
                 >
                   Geri
                 </button>
               </li>
-              <li>
-                <button className="w-10 h-10  rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white">
-                  1
-                </button>
-              </li>
-              <li>
-                <button className="w-10 h-10 rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white">
-                  2
-                </button>
-              </li>
-              <li>
-                <button className="w-10 h-10 rounded-full bg-red-900 border border-gray-300 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white">
-                  3
-                </button>
-              </li>
-              <li>
-                <button className="w-10 h-10 rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white">
-                  4
-                </button>
-              </li>
-              <li>
-                <button className="w-10 h-10 rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white">
-                  5
-                </button>
-              </li>
+
+              {pages.map((page) => {
+                return (
+                  <li key={page}>
+                    <button
+                      onClick={() => setCurrentPage(page)}
+                      className={
+                        currentPage !== page
+                          ? "w-10 h-10 rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white"
+                          : "w-10 h-10 rounded-full bg-red-900 border border-gray-300 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white"
+                      }
+                    >
+                      {page}
+                    </button>
+                  </li>
+                );
+              })}
+
               <li>
                 <button
-                  onClick={() => setCurrentPage(currentPage + 1)}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, total_pages))
+                  }
                   className="w-20 h-10 rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white"
                 >
                   İleri
