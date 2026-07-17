@@ -8,10 +8,10 @@ function Explore({ addFav, removeFav, favoriMovies }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [popularMovies, setPopularMovies] = useState([]);
 
-  const debounce = useDebounce(searchKey, 500);
+  const debounce = useDebounce(searchKey, 300);
 
   useEffect(() => {
-    if (debounce == "") {
+    if (debounce === "") {
       getPopularMovies(currentPage).then((response) =>
         setPopularMovies(response.results),
       );
@@ -39,6 +39,7 @@ function Explore({ addFav, removeFav, favoriMovies }) {
             value={searchKey}
             onChange={(e) => {
               setSearchKey(e.target.value);
+              setCurrentPage(1);
             }}
           />
         </div>
@@ -77,7 +78,7 @@ function Explore({ addFav, removeFav, favoriMovies }) {
                 </button>
               </li>
               <li>
-                <button className="w-10 h-10 rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white">
+                <button className="w-10 h-10 rounded-full bg-red-900 border border-gray-300 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white">
                   3
                 </button>
               </li>
