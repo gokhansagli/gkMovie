@@ -51,7 +51,7 @@ function MovieCard({ movie, addFav, removeFav, favoriMovies }) {
       <div className="flex justify-between items-center mt-3 mb-3">
         <div>
           <span className="text-slate-400">
-            Rating: {vote_average.toFixed(1)}
+            Rating: {vote_average?.toFixed(1)}
           </span>
         </div>
         <Link to={`/movie/${id}`}>

@@ -50,7 +50,6 @@ function Explore({ addFav, removeFav, favoriMovies }) {
     pages.push(i);
   }
 
-  console.log(pages);
   return (
     <>
       <Navbar />
@@ -84,13 +83,14 @@ function Explore({ addFav, removeFav, favoriMovies }) {
         </div>
         <div>
           <div className="my-12 flex justify-end">
-            <ul className="flex gap-3 items-center justify-center text-center ">
+            <ul className="flex gap-3 items-center justify-center text-center flex-wrap">
               <li>
                 <button
+                  disabled={currentPage === 1}
                   onClick={() =>
                     setCurrentPage((prev) => Math.max(prev - 1, 1))
                   }
-                  className="w-20 h-10  rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white"
+                  className="w-20 h-10  rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Geri
                 </button>
@@ -115,10 +115,11 @@ function Explore({ addFav, removeFav, favoriMovies }) {
 
               <li>
                 <button
+                  disabled={currentPage === total_pages || total_pages === 0}
                   onClick={() =>
                     setCurrentPage((prev) => Math.min(prev + 1, total_pages))
                   }
-                  className="w-20 h-10 rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white"
+                  className="w-20 h-10 rounded-full bg-gray-950 border border-red-500 hover:bg-red-900 hover:border-gray-300 text-white p-2 block cursor-pointer hover:bg-gray-600 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   İleri
                 </button>
