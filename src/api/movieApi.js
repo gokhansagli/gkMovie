@@ -22,10 +22,10 @@ async function getNowPlayingMovies() {
   }
 }
 
-async function getPopularMovies() {
+async function getPopularMovies(currentPage = 1) {
   try {
     const response = await axios.get(
-      `${API_URL}3/movie/popular?language=tr-TR`,
+      `${API_URL}3/movie/popular?page=${currentPage}&language=tr-TR`,
       {
         headers: API_HEADERS,
       },
@@ -109,6 +109,19 @@ async function getMovieVideo(id) {
   }
 }
 
+async function getFindMovie(query, currentPage) {
+  try {
+    const response = await axios.get(
+      `${API_URL}3/search/movie?query=${query}&page=${currentPage}&language=tr-TR`,
+      { headers: API_HEADERS },
+    );
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export {
   getNowPlayingMovies,
   getUpComingMovies,
@@ -117,4 +130,5 @@ export {
   getMovie,
   getMovieCredits,
   getMovieVideo,
+  getFindMovie,
 };
