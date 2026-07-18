@@ -20,8 +20,8 @@ function Explore({ addFav, removeFav, favoriMovies }) {
     }
   }, [debounce, currentPage]);
 
-  let startPage = 0;
-  let endPage = 0;
+  let startPage;
+  let endPage;
   const visiblePages = 5;
   const sideCount = Math.floor(visiblePages / 2);
   const total_pages = moviesData?.total_pages || 0;
