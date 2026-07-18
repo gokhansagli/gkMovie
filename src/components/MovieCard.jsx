@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { FavoriteMoviesContext } from "../context/FavoriteContext";
 
-function MovieCard({ movie, addFav, removeFav, favoriMovies }) {
+function MovieCard({ movie }) {
   const { id, original_title, overview, poster_path, vote_average } = movie;
+
+  const { addFav, removeFav, isFavorite } = useContext(FavoriteMoviesContext);
 
   return (
     <div className="bg-gray-800 p-4 rounded-lg flex flex-col space-y-4 group">
@@ -17,7 +21,7 @@ function MovieCard({ movie, addFav, removeFav, favoriMovies }) {
         </Link>
         <div className="absolute top-2 right-2">
           <span className="text-2xl text-slate-100 cursor-pointer">
-            {favoriMovies.includes(id) ? (
+            {isFavorite(id) ? (
               <BsHeartFill
                 className="text-red-600"
                 onClick={() => {
@@ -27,7 +31,13 @@ function MovieCard({ movie, addFav, removeFav, favoriMovies }) {
             ) : (
               <BsHeart
                 onClick={() => {
-                  return addFav(id);
+                  return addFav(
+                    id,
+                    original_title,
+                    overview,
+                    vote_average,
+                    poster_path,
+                  );
                 }}
               />
             )}
